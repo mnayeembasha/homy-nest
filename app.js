@@ -70,7 +70,7 @@ app.use(
   session({
     secret: SESSION_SECRET,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     store: MongoStore.create({
       mongoUrl: MONGO_URL,
       touchAfter: 24 * 3600, // Reduces session updates
