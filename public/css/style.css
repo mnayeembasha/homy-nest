@@ -1,0 +1,254 @@
+* {
+  font-family: "Mona Sans", "Mona Sans Fallback", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-weight: bold !important;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* background-color: #121212; */
+}
+.container {
+  flex: 1;
+}
+/* Navbar */
+.navbar {
+  /* min-height: 2rem; */
+  /* background-color: white; */
+}
+.navbar-brand i {
+  color: #fe424d;
+  font-size: 2rem;
+}
+.nav-link {
+  color: #222222 !important;
+}
+
+/* Footer */
+
+.f-info-links a {
+  text-decoration: none;
+  color: #222222;
+}
+
+.f-info-links a :hover {
+  text-decoration: underline;
+}
+.f-info-links,
+.f-info-socials,
+.f-info-brand {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.f-info-socials a {
+  color: unset;
+}
+.f-info-socials i {
+  font-size: 1.2rem;
+  margin-right: 1rem;
+}
+.f-info {
+  text-align: center;
+  height: 8rem;
+  /* background-color: #ebebeb; */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: space-evenly;
+}
+
+/* Cards */
+.card {
+  margin-bottom: 2rem;
+}
+.listing-card,
+.show-card {
+  border: none !important;
+}
+.card-img-top {
+  border-radius: 0.7rem !important;
+  width: 100% !important;
+  object-fit: cover !important;
+}
+.card-text p {
+  font-weight: 400 !important;
+}
+
+/* Card Overlay effect */
+.card-img-overlay {
+  opacity: 0;
+}
+.card-img-overlay:hover {
+  opacity: 0.2 !important;
+  background-color: white !important;
+}
+
+/*New Page*/
+.btn-danger {
+  background-color: #fe424d !important;
+}
+
+/*Edit Page*/
+
+/*Show Page*/
+.show-img {
+  height: 30vh;
+  height: 35vh;
+}
+.btns {
+  display: flex;
+}
+.show-card {
+  padding-left: 0;
+  padding-right: 0;
+}
+.show-card-text div {
+  color: red;
+  padding-top: 1rem !important;
+}
+
+/*Error Page*/
+.alert-icon-small {
+  width: 1.7rem; /* Adjust the width as needed */
+  height: 1.7rem; /* Adjust the height as needed */
+}
+.alert-heading {
+  font-size: 1.2rem !important;
+}
+
+/*flash.ejs page*/
+.progress {
+  margin-top: 10px;
+  position: relative;
+}
+
+/*login.ejs page*/
+.login-bg {
+  background: radial-gradient(
+    circle at center,
+    #ff385c 0%,
+    #e61e4d 27.5%,
+    #e31c5f 40%,
+    #d70466 57.5%,
+    #bd1e59 75%,
+    #bd1e59 100%
+  );
+  background: linear-gradient(
+    319.6deg,
+    rgb(243, 0, 79) 20.5%,
+    rgb(255, 236, 68) 110.9%
+  );
+}
+
+.btn-grad {
+  background-image: linear-gradient(
+    to right,
+    #ff512f 0%,
+    #dd2476 51%,
+    #ff512f 100%
+  );
+  text-align: center;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
+  border: none;
+}
+
+.btn-grad:hover {
+  background-position: right center;
+  color: #fff;
+  text-decoration: none;
+}
+
+.text-signin {
+  background: linear-gradient(
+    69.5deg,
+    rgb(251, 0, 0) -0.5%,
+    rgb(3, 10, 252) 97.4%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* New.ejs */
+.newlisting-form input:hover,
+.newlisting-form input:focus {
+  /* border: none; */
+}
+
+/*Color changes*/
+body {
+  background: radial-gradient(
+    circle at 24.1% 68.8%,
+    rgb(50, 50, 50) 0%,
+    rgb(0, 0, 0) 99.4%
+  );
+  background: #030712;
+  /* background-color: rgb(44,44,63); */
+  background-color: rgb(26, 26, 46);
+  background-color: rgb(26, 26, 46);
+  background-color: #4B0082;
+  /* background-color: #3D3C6C; */
+    background-color: #6A0D91 ;
+  background-color: #3C0A6B;
+  background-color: #2E073F;
+  background-color: #fff;
+
+  color: white;
+  color: black;
+
+}
+.navbar{
+  /* background: radial-gradient(circle at 24.1% 68.8%, rgb(50, 50, 50) 0%, rgb(0, 0, 0) 99.4%); */
+  color: white !important;
+  background-color: rgb(44, 44, 63) ;
+    background-color: #3C0A6B ;
+    background-color: #2E073F;
+
+  /* border-bottom: 1px solid #6A0D91; */
+}
+.nav-link {
+  color: white !important;
+  font-weight: 600;
+}
+.font-bold{
+  font-weight: 800 !important;
+}
+.card {
+  background: radial-gradient(
+    circle at 24.1% 68.8%,
+    rgb(50, 50, 50) 0%,
+    rgb(0, 0, 0) 99.4%
+  );
+  background: none;
+  color: white;
+  color: black;
+}
+footer {
+  background-color: rgb(44, 44, 63);
+  background-color: #3C0A6B ;
+}
+.f-info-links a{
+  padding:0 0.3rem;
+  color: white !important ;
+}
+.login-bg{
+  background: linear-gradient(-225deg, #AC32E4 0%, #7918F2 48%, #4801FF 100%);
+}
+
+
