@@ -6,6 +6,12 @@ const ejsMate = require("ejs-mate");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const flash = require("connect-flash");
+const compression = require("compression");
+const helmet = require("helmet");
+const mongoSanitize = require("express-mongo-sanitize");
+const rateLimit = require("express-rate-limit");
+const MongoStore = require("connect-mongo");
+
 const Listing = require("./models/listing.js");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
@@ -17,17 +23,39 @@ const userRouter = require("./routes/user.js");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
-const {  connectDB } = require("./init/index.js");
-const {  PORT } = require("./config.js");
+const { connectDB } = require("./init/index.js");
+const { PORT, SESSION_SECRET, NODE_ENV, MONGO_URL } = require("./config.js");
+
+/* Secure Headers */
+app.use(helmet());
+
+/* Prevent MongoDB Injection */
+app.use(mongoSanitize());
+
+/* Rate Limiting (Prevent DDoS Attacks) */
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // 100 requests per window
+  message: "Too many requests from this IP, please try again later",
+});
+app.use(limiter);
+
+/* Enable Compression */
+app.use(compression());
 
 /* Connect to Mongoose */
 connectDB()
   .then(() => {
-    console.log("DB connection successfull");
+    console.log("✅ DB connection successful");
   })
   .catch((err) => {
-    console.log("Error while connecting to database", err);
+    console.error("❌ Error while connecting to database:", err);
   });
+
+mongoose.connection.on("disconnected", () => {
+  console.log("⚠️ MongoDB disconnected! Reconnecting...");
+  connectDB();
+});
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -37,62 +65,72 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.json());
 
-
-app.use(session({
-  secret:"secretcode",
-  resave:false,
-  saveUninitialized:true,
-  cookie:{
-    //Time after which sessionId cookie expires(7days-in ms)
-    expires:Date.now()+7*24*60*60*1000,
-    maxAge:7*24*60*60*1000,
-    httpOnly:true
-  }
-}));
+/* ✅ Secure Session Configuration with MongoDB */
+app.use(
+  session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: MONGO_URL,
+      touchAfter: 24 * 3600, // Reduces session updates
+      crypto: { secret: SESSION_SECRET }, // Encrypt session data
+    }),
+    cookie: {
+      expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: NODE_ENV === "production",
+      sameSite: "lax",
+    },
+  })
+);
 app.use(flash());
 
-//Authentication Middleware - (passport.js)
+/* Authentication Middleware - Passport */
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-/*Handle the Flash Messages */
-app.use((req,res,next)=>{
+/* Handle Flash Messages */
+app.use((req, res, next) => {
   res.locals.successMsg = req.flash("success");
   res.locals.errorMsg = req.flash("error");
   res.locals.currentUser = req.user;
   return next();
 });
 
-app.use("/listings",listings);
-app.use("/listings/:id/reviews",reviews);
-app.use("/",userRouter);
+/* Routes */
+app.use("/listings", listings);
+app.use("/listings/:id/reviews", reviews);
+app.use("/", userRouter);
 
-// Routes
+/* Home Route */
 app.get(
   "/",
   wrapAsync(async (req, res) => {
     const allListings = await Listing.find({});
     res.render("listings/index.ejs", { allListings });
   })
-
 );
 
-/* Handle Page Not Found Error */
+/* Handle 404 Errors */
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found!"));
 });
 
-/*Handle Errors through Middleware */
+/* Global Error Handling Middleware */
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Something went wrong" } = err;
-  res.status(statusCode).render("error.ejs", { err });
-  // res.status(statusCode).send(message);
+  if (NODE_ENV === "production") {
+    message = "Internal Server Error"; // Hide sensitive error details
+  }
+  res.status(statusCode).render("error.ejs", { err: { message, statusCode } });
 });
 
-// Start the server
+/* Start the Server */
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`🚀 Server is running on port ${PORT}`);
 });
