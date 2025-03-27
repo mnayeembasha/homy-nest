@@ -4,8 +4,9 @@
   "description": "This is a cloned version of AIRBNB",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build":"npm install",
+    "start":"node app.js",
+    "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "Nayeem Basha",
