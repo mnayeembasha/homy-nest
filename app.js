@@ -6,10 +6,10 @@ const ejsMate = require("ejs-mate");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const flash = require("connect-flash");
-const compression = require("compression");
-const helmet = require("helmet");
-const mongoSanitize = require("express-mongo-sanitize");
-const rateLimit = require("express-rate-limit");
+// const compression = require("compression");
+// const helmet = require("helmet");
+// const mongoSanitize = require("express-mongo-sanitize");
+// const rateLimit = require("express-rate-limit");
 const MongoStore = require("connect-mongo");
 
 const Listing = require("./models/listing.js");
@@ -27,21 +27,21 @@ const { connectDB } = require("./init/index.js");
 const { PORT, SESSION_SECRET, NODE_ENV, MONGO_URL } = require("./config.js");
 
 /* Secure Headers */
-app.use(helmet());
+// app.use(helmet());
 
 /* Prevent MongoDB Injection */
-app.use(mongoSanitize());
+// app.use(mongoSanitize());
 
 /* Rate Limiting (Prevent DDoS Attacks) */
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // 100 requests per window
-  message: "Too many requests from this IP, please try again later",
-});
-app.use(limiter);
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 100, // 100 requests per window
+//   message: "Too many requests from this IP, please try again later",
+// });
+// app.use(limiter);
 
 /* Enable Compression */
-app.use(compression());
+// app.use(compression());
 
 /* Connect to Mongoose */
 connectDB()
