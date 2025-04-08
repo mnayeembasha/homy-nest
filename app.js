@@ -80,10 +80,8 @@ app.use(
       expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
-      // secure: NODE_ENV === "production",
-      // sameSite: "lax",
-      secure:true,
-      sameSite:'None'
+      secure: NODE_ENV === "production",
+      sameSite: NODE_ENV === "production" ? "None" : "Lax",
     },
   })
 );
