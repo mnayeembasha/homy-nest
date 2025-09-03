@@ -6,10 +6,6 @@ const ejsMate = require("ejs-mate");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const flash = require("connect-flash");
-// const compression = require("compression");
-// const helmet = require("helmet");
-// const mongoSanitize = require("express-mongo-sanitize");
-// const rateLimit = require("express-rate-limit");
 const MongoStore = require("connect-mongo");
 
 const Listing = require("./models/listing.js");
@@ -40,6 +36,10 @@ mongoose.connection.on("disconnected", () => {
   connectDB();
 });
 
+if (NODE_ENV === "production") {
+  app.set("trust proxy", 1); // trust Render's proxy
+}
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.engine("ejs", ejsMate);
@@ -64,7 +64,7 @@ app.use(
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
       secure: NODE_ENV !== "development",
-      sameSite: "strict",
+      sameSite: "lax",
     },
   })
 );
