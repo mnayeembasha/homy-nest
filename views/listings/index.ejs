@@ -1,0 +1,39 @@
+<% layout('layouts/boilerplate') -%>
+<body>
+  <!-- <h1>All Listings</h1> -->
+  <!-- <form action="/listings/new" method="get">
+        <button class="btn btn-danger">Add new Listing</button>
+    </form> -->
+  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+    <% for(listing of allListings) { %>
+      <a href="/listings/<%= listing._id %>" class="text-decoration-none">
+          <div class="card col listing-card">
+              <img
+                  src="<%= listing.image %>"
+                  class="card-img-top"
+                  alt="listing_image"
+                  style="height:20rem;"
+                  onerror="this.src='/images/default.jpg'"
+              />
+              <div class="card-img-overlay"></div>
+              <div class="card-body">
+                  <p class="card-text">
+                      <b><%= listing.title %> </b><br />
+                      &#8377;<%= listing.price.toLocaleString("en-IN") %> / night
+                  </p>
+              </div>
+          </div>
+      </a>
+  <% } %>
+
+  </div>
+
+
+  </body>
+  <!-- Bootstrap JS -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"
+  ></script>
+</body>
